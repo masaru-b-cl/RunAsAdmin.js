@@ -1,4 +1,4 @@
-/// <reference path="WSH-vsdoc.js" />
+/// <reference path="../WSH-vsdoc/WSH-vsdoc.js" />
 var RunAsAdmin;
 (function (RunAsAdmin) {
   var Account = (function () {
@@ -26,7 +26,6 @@ var RunAsAdmin;
       /// <param name="args" type="String">Target file arguments.</param>
 
       var shell = new ActiveXObject("WScript.Shell");
-
       var command = "runas /user:" + this.account.user + " \"cmd /k \\\"" + target + "\\\" " + args + "\"";
 
       shell.Run(command);
@@ -43,7 +42,6 @@ var RunAsAdmin;
   })();
   RunAsAdmin.Command = Command;
 })(RunAsAdmin || (RunAsAdmin = {}));
-
 
 // var account = new RunAsAdmin.Account("user", "password");
 // var command = new RunAsAdmin.Command(account);
