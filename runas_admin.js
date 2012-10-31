@@ -1,20 +1,49 @@
-/// <reference path=".\WSH-vsdoc.js"/>
-function runAsAdmin(target, arg) {
-    /// <param name="target" type="String">To executing target file path.</param>
+/// <reference path="WSH-vsdoc.js" />
+var RunAsAdmin;
+(function (RunAsAdmin) {
+  var Account = (function () {
+    function Account(user, password) {
+      /// <param name="user" type="String">run as user.</param>
+      /// <param name="password" type="String">run as password.</param>
 
-    // 別ユーザでbatファイルを実行
-    var shell = new ActiveXObject("WScript.Shell");
-    var curDir = shell.CurrentDirectory;
+      this.user = user;
+      this.password = password;
+    }
 
-    var command = "runas /user:" + account + " \"cmd /k \\\"" + curDir + target + "\\\" " + arg + "\"";
-    shell.Run(command);
+    return Account;
+  })();
+  RunAsAdmin.Account = Account;
 
-    // コマンドプロンプトが立ち上がるまでWait
-    WScript.Sleep(1000)
+  var Invoker = (function () {
+    function Invoker(account) {
+      /// <param name="account" type="String">run as account.</param>
 
-    // パスワードを自動入力
-    shell.SendKeys(password)
+      this.account = account;
+    }
 
-    // Enterを自動入力
-    shell.SendKeys("{enter}")
-}
+    Invoker.prototype.execute = function (target, args) {
+      /// <param name="target" type="String">To executing target file path.</param>
+      /// <param name="args" type="String">Target file arguments.</param>
+
+      var shell = new ActiveXObject("WScript.Shell");
+
+      var command = "runas /user:" + this.account.user + " \"cmd /k \\\"" + target + "\\\" " + args + "\"";
+
+      shell.Run(command);
+
+      // wait for opening command prompt
+      WScript.Sleep(1000)
+
+      // input password
+      shell.SendKeys(this.account.password)
+      shell.SendKeys("{enter}")
+    };
+
+    return Invoker;
+  })();
+  RunAsAdmin.Invoker = Invoker;
+})(RunAsAdmin || (RunAsAdmin = {}));
+
+// var account = new RunAsAdmin.Account("user", "password");
+// var invoker = new RunAsAdmin.Invoker(account);
+// invoker.execute("calc", "");
