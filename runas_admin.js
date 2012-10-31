@@ -14,14 +14,14 @@ var RunAsAdmin;
   })();
   RunAsAdmin.Account = Account;
 
-  var Invoker = (function () {
-    function Invoker(account) {
+  var Command = (function () {
+    function Command(account) {
       /// <param name="account" type="String">run as account.</param>
 
       this.account = account;
     }
 
-    Invoker.prototype.execute = function (target, args) {
+    Command.prototype.run = function (target, args) {
       /// <param name="target" type="String">To executing target file path.</param>
       /// <param name="args" type="String">Target file arguments.</param>
 
@@ -39,11 +39,12 @@ var RunAsAdmin;
       shell.SendKeys("{enter}")
     };
 
-    return Invoker;
+    return Command;
   })();
-  RunAsAdmin.Invoker = Invoker;
+  RunAsAdmin.Command = Command;
 })(RunAsAdmin || (RunAsAdmin = {}));
 
+
 // var account = new RunAsAdmin.Account("user", "password");
-// var invoker = new RunAsAdmin.Invoker(account);
-// invoker.execute("calc", "");
+// var command = new RunAsAdmin.Command(account);
+// command.run("calc", "");
