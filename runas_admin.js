@@ -26,7 +26,7 @@ var RunAsAdmin;
       /// <param name="args" type="String">Target file arguments.</param>
 
       var shell = new ActiveXObject("WScript.Shell");
-      var command = "runas /user:" + this.account.user + " \"cmd /k \\\"" + target + "\\\" " + args + "\"";
+      var command = "runas /user:" + this.account.user + " \"\\\"" + target + "\\\" " + args + "\"";
 
       shell.Run(command);
 
@@ -43,6 +43,7 @@ var RunAsAdmin;
   RunAsAdmin.Command = Command;
 })(RunAsAdmin || (RunAsAdmin = {}));
 
-// var account = new RunAsAdmin.Account("user", "password");
-// var command = new RunAsAdmin.Command(account);
-// command.run("calc", "");
+// e.g)
+//   var account = new RunAsAdmin.Account("user", "password");
+//   var command = new RunAsAdmin.Command(account);
+//   command.run("notepad.exe", "test.txt");
